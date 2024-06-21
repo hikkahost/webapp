@@ -1,89 +1,163 @@
-# Nuxt 3 Starter
+# Nuxt Telegram Miniapps UI Kit
 
-This is an minimal starter template for [Nuxt 3](https://nuxt.com). It is based on the what we use and love at [Input Studio](https://inputstudio.co).
+This is an experiment in building a library of Telegram web application interface components with Tailwind CSS. All components inherit the design concept of Telegram for Android, but do not try to match it exactly.
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+⚠️ **Please do not use this library in real projects until the first stable version is published. Breaking changes may occur without prior notice!**
 
-## Features
-
-- 👓 [Sass](https://sass-lang.com/)
-- 🪁 [Tailwind CSS](https://tailwindcss.com)
-- 🇬 [Google Fonts](https://google-fonts.nuxtjs.org/)
-- 🚀 [Nuxt Icon](https://nuxt.com/modules/icon) (add any icons from [icones.js.org](https://icones.js.org/) collection)
-- 🔍 [Nuxt SEO](https://nuxtseo.com/) (robots.txt, sitemap, link checker, etc.)
-- 🧰 [VueUse](https://vueuse.org/) (a collection of essential utilities — trust me, you'll need it at somepoint)
-- 💾 HTTP cache control and compression for static assets
-- 🪛 Eslint and Prettier with [Tailwind plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) (automatically sorts classes based on recommended class order)
-- ⚙️ VS Code settings and recommended extensions
-- 🐋 Optimized Dockerfile for production (includes a GitHub Actions workflow to build and publish your Docker image)
-- 📦 Package manager agnostic (`nuxi` will ask you which package manager you want and it'll install dependencies accordingly)
-
-## Setup
-
-Make sure to have Node.js version 20 or higher installed on your machine. If it's not the case, you can install [volta](https://volta.sh).
-Volta will automatically install the required versions of Node.js.
-
-Now, you can run the following command to create a new Nuxt 3 project based on this template:
+## Installation
 
 ```bash
-npx nuxi init -t gh:inputstudio/nuxt3-starter <project-name>
+npm install -D nuxt-telegram-webapps
+```
+> **Note**: This also installs required nuxt modules:
+>
+> - [@nuxtjs/tailwindcss](https://github.com/nuxt-modules/tailwindcss)
+> - [@nuxtjs/google-fonts](https://github.com/nuxt-modules/google-fonts)
+> - [nuxt-icon](https://github.com/nuxt-modules/icon)
+> - [@vueuse/nuxt](https://github.com/vueuse/vueuse/tree/main/packages/nuxt)
+
+## Usage
+
+This component library is [Nuxt Layer](https://nuxt.com/docs/getting-started/layers). To use it, just add the `extends` setting.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  extends: [
+    'nuxt-telegram-miniapps',
+  ]
+})
 ```
 
-After that, make sure to go through the TODOs (search for `TODO` in your code editor) to customize the project to your needs. Enjoy ✨
+Then create a page that is supposed to be a web application or place the web application components in the `app.vue`. It's recommended to place all components inside helper component `TgContent`.
 
-## Which UI framework should I use?
-
-This starter template uses Tailwind CSS by default. You can add any UI framework you want on top of it. Here are some that we use and recommend (they are all fully compatible with Tailwind):
-
-- [Headless UI](https://nuxt.com/modules/headlessui)
-- [Daisy UI](https://daisyui.com/docs/install/)
-- [NuxtUI](https://ui.nuxt.com/)
-
-Feel free to use any other UI framework you like 🙂.
-
-## Production
-
-To build the application for production, run the following command:
-
-```bash
-npm run build
+```html
+<template>
+  <TgContent>
+    <TgSection>
+      <TgCell title="Some title" />
+    </TgSection>
+  </TgContent>
+</template>
 ```
 
-This will generate a `dist` directory containing the production build. You can preview the production build locally by running:
+## Components
 
-```bash
-npm run preview
+### TgSection
+A component within which you can place TgCell`s groups or any content block of a web application
+
+#### Props
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| title | string | The panel title |
+| content | boolean | Specifies whether to add paddings |
+| inset | boolean | Specifies whether to add margins |
+
+```html
+<!-- Section with cells -->
+<TgSection title="Section title">
+  <TgCell title="Cell 1" />
+  <TgCell title="Cell 2" />
+</TgSection>
+
+<!-- Section with content -->
+<TgSection title="Section title" content>
+  <p>Some section content</p>
+</TgSection>
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+### TgCell
+This is the main component of the menu. It automatically sets paddings, icon positioning, colors and dividers.
 
-## Docker
+#### Props
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| title | string | The main text of the cell |
+| description | string | The faded small text or hint |
+| subtitle | string | Not faded small text, positioned before description |
+| icon | string | The name of the icon (look: https://icones.js.org/) |
+| line-clamp | string | The line clamp of the subtitle and description |
+| color | string | Can be `default`, `primary`, `danger` |
+| border | boolean | Determines whether to show the border at the bottom |
 
-Before you start, copy either the `Dockerfile.npm` or `Dockerfile.yarn` to `Dockerfile` in the root of your project. Depending on which package manager you want to use.
+#### Slots
+| Name | Description |
+| ---- | ----------- |
+| default | You can add any content you want to the cell |
+| icon | Places the content to the left of the main content, usually there is an icon there |
+| right | Places the content to the right of the main content |
 
-### Building and running your application
+```html
+<!-- Simple cell -->
+<TgCell title="Some title" description="Some description" />
 
-When you're ready, start your application by running:
+<!-- Cell with content -->
+<TgCell>
+  <p>Some content inside the cell</p>
+</TgCell>
 
-```bash
-docker compose up
+<!-- Cell with slots -->
+<TgCell title="Some title" description="Some description">
+  <template #icon>
+    <TgIconBox icon="material-symbols:qr-code" />
+  </template>
+  <template #right>
+    <TgButton size="sm">Button</TgButton>
+  </template>
+</TgCell>
 ```
 
-Your application will be available at http://localhost:3000.
+### TgButton
+This is just button, not something special 💁‍♂️
+It is used to trigger some actions
 
-### Deploying your application to the cloud
+#### Props
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| color | string | May be `primary` or `danger` |
+| type | string | May be `button`, `submit` or `reset` |
+| to | string | Vue-Router route location |
+| href | string | External link |
+| disabled | boolean | Disabled state |
+| rel | string | Rel attribute |
+| target | string | Target attribute |
+| size | string | May be `sm`, `md`, `lg` or `xl` |
+| text | boolean | Set `true` if you want to make button look like link |
+| icon | string | The name of the icon (look: https://icones.js.org/) |
 
-First, build your image, e.g.: `docker build -t myapp .`.
-If your cloud uses a different CPU architecture than your development
-machine (e.g., you are on a Mac M1 and your cloud provider is amd64),
-you'll want to build the image for that platform, e.g.:
-`docker build --platform=linux/amd64 -t myapp .`.
+### TgIconBox
+A component to display an icon inside a circle or rectangle with rounded corners. The icon can be replaced by text
 
-Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
+#### Props
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| icon | string | The name of the icon (look: https://icones.js.org/) |
+| text | string | Text to display instead of an icon |
+| round | boolean | Display a circle or rectangle |
+| size | string | May be `sm`, `md`, `lg` or `xl` |
+| color | string | May be `primary` or `danger` |
+| class | string | If you want to make a unique color or gradient, you can pass a class instead of color |
 
-Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
-docs for more detail on building and pushing.
+You can place the `TgIconBox` in the `icon` slot of the `TgCell` component:
+```html
+<TgCell title="Some title" description="Some description">
+  <template #icon>
+    <TgIconBox icon="material-symbols:qr-code" />
+  </template>
+</TgCell>
+```
 
-### References
+### TgInput
+Just input without borders
 
-- [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)
+#### Props
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| v-model:value | string | Input text |
+| placeholder | string | Placeholder text |
+
+```html
+<TgSection title="Section title" content>
+  <TgInput v-model:value="input" />
+</TgSection>
+```

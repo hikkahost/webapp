@@ -1,33 +1,23 @@
-const cacheTTL = 60 * 60 * 24 * 365; // 1 year – you can set this to whatever you want
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
+const currentDir = dirname(fileURLToPath(import.meta.url))
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@vueuse/nuxt'],
+
+  googleFonts: {
+    families: {
+      Roboto: [300, 400, 500, 700],
+    },
+  },
+
+  css: [join(currentDir, './assets/telegram.css')],
   app: {
     head: {
-      link: [{ rel: 'icon', href: '/favicon.ico' }],
+      script: [{ src: 'https://telegram.org/js/telegram-web-app.js' }],
     },
   },
-  css: ['@/assets/scss/main.scss'],
-  nitro: {
-    compressPublicAssets: true,
-    routeRules: {
-      '/img/**': { headers: { 'cache-control': `public,max-age=${cacheTTL},s-maxage=${cacheTTL}` } },
-      '/_nuxt/**': { headers: { 'cache-control': `public,max-age=${cacheTTL},s-maxage=${cacheTTL}` } },
-    },
-  },
-  modules: ['@nuxtjs/google-fonts', '@nuxtjs/seo', '@nuxtjs/tailwindcss', '@nuxt/eslint', 'nuxt-icon', '@vueuse/nuxt'],
-  googleFonts: {
-    // https://google-fonts.nuxtjs.org/getting-started/options
-    families: {
-      Inter: [100, 300, 400, 500, 600, 700],
-    },
-  },
-  site: {
-    // https://nuxtseo.com/
-    url: 'https://example.com', // TODO: Your site's URL
-    name: 'Welcome to Nuxt', // TODO: Your site's default meta title
-    description: 'My awesome Nuxt project', // TODO: Your site's default meta description
-    defaultLocale: 'en', // TODO: HTML lang attribute value
-  },
-});
+
+})

@@ -1,9 +1,76 @@
 <template>
-  <div>
-    <NuxtWelcome />
+  <div class="py-4">
+    <TgSection>
+      <TgLine :border="false" class="pt-2">
+        <TgIconBox icon="ph:moon-duotone" size="xl" />
+      </TgLine>
+      <TgLine :border="false">
+        <h1 class="text-lg font-medium pt-1">HikkaHost</h1>
+      </TgLine>
+      <TgLine :border="false">
+        <p class="tg-hint leading-none text-xs pb-1">Hosting for Hikka userbot</p>
+      </TgLine>
+      <TgLine class="pt-2" :border="false">
+        <TgButton icon="ph:play-duotone">Start</TgButton>
+        <TgButton icon="ph:pause-duotone">Stop</TgButton>
+      </TgLine>
+      <TgLine class="pb-2">
+        <TgButton icon="ph:play-pause-duotone">Restart</TgButton>
+      </TgLine>
+    </TgSection>
+
+    <TgSection title="Userbot">
+      <TgCell title="Subscription time" description="Expires in 27.02.2024">
+        <template #icon>
+          <TgIconBox icon="ph:clock-duotone" />
+        </template>
+        <template #right>
+          1w 10d
+        </template>
+      </TgCell>
+
+      <TgCell title="CPU usage" description="Processor load %">
+        <template #icon>
+          <TgIconBox icon="ph:cpu-duotone" />
+        </template>
+        <template #right>
+          5.45%
+        </template>
+      </TgCell>
+
+      <TgCell title="RAM usage" description="Memory load %">
+        <template #icon>
+          <TgIconBox icon="ph:memory-duotone" />
+        </template>
+        <template #right>
+          78.4%
+        </template>
+      </TgCell>
+
+      <TgCell title="Ping" description="Time to answer">
+        <template #icon>
+          <TgIconBox icon="ph:ping-pong-duotone" />
+        </template>
+        <template #right>
+          20.13ms
+        </template>
+      </TgCell>
+
+      <TgCell title="Logs" description="All userbot logs">
+        <template #icon>
+          <TgIconBox icon="ph:bug-beetle-duotone" />
+        </template>
+        <template #right>
+          <TgButton>Open</TgButton>
+        </template>
+      </TgCell>
+    </TgSection>
   </div>
 </template>
 
-<script lang="ts" setup></script>
-
-<style lang="scss"></style>
+<script setup lang="ts">
+definePageMeta({
+  layout: 'webapp',
+})
+const logs = 'lorem ipsum\n' * 100
+</script>
