@@ -11,11 +11,11 @@
         <p class="tg-hint leading-none text-xs pb-1">Hosting for Hikka userbot</p>
       </TgLine>
       <TgLine class="pt-2" :border="false">
-        <TgButton icon="ph:play-duotone">Start</TgButton>
-        <TgButton icon="ph:pause-duotone">Stop</TgButton>
+        <TgButton @click="actionPopup" icon="ph:play-duotone">Start</TgButton>
+        <TgButton @click="actionPopup" icon="ph:pause-duotone">Stop</TgButton>
       </TgLine>
       <TgLine class="pb-2">
-        <TgButton icon="ph:play-pause-duotone">Restart</TgButton>
+        <TgButton @click="actionPopup" icon="ph:play-pause-duotone">Restart</TgButton>
       </TgLine>
     </TgSection>
 
@@ -61,7 +61,7 @@
           <TgIconBox icon="ph:bug-beetle-duotone" />
         </template>
         <template #right>
-          <TgButton>Open</TgButton>
+          <TgButton to="/logs">Open</TgButton>
         </template>
       </TgCell>
     </TgSection>
@@ -72,5 +72,12 @@
 definePageMeta({
   layout: 'webapp',
 })
-const logs = 'lorem ipsum\n' * 100
+const logs = 'lorem ipsum\n' * 100;
+
+const actionPopup = () => {
+  Telegram.WebApp.showPopup({
+    title: 'Action',
+    message: 'Action complete success'
+  })
+}
 </script>
