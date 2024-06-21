@@ -23,7 +23,7 @@
     "nuxt": "^3.11.2",
     "nuxt-icon": "^0.6.10",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.11",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "sass": "^1.71.1",
     "typescript": "^5.4.5",
     "vue-tsc": "^1"
