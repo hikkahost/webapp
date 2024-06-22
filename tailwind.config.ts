@@ -7,6 +7,7 @@ export default <Partial<Config>>{
     extend: {
       fontFamily: {
         sans: ['Roboto', 'ui-sans-serif', 'system-ui'],
+        mono: ['JetBrains Mono', 'ui-monospace'],
       },
       boxShadow: {
         card: '0px 0px 15px 0px rgba(34, 60, 80, 0.2)',

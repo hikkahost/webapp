@@ -99,7 +99,7 @@ const pt = computed(() => {
         <slot />
       </div>
 
-      <div v-if="$slots.right" class="ms-auto shrink-0 pr-5" :class="props.to ? 'pl-4 border-l tg-border' : ''">
+      <div v-if="$slots.right" class="ms-auto shrink-0 pr-5 font-mono" :class="props.to ? 'pl-4 border-l tg-border' : ''">
         <slot name="right" />
       </div>
     </div>

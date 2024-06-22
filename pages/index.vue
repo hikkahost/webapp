@@ -19,7 +19,7 @@
       </TgLine>
     </TgSection>
 
-    <TgSection title="Userbot">
+    <TgSection>
       <TgCell title="Subscription time" description="Expires in 27.02.2024">
         <template #icon>
           <TgIconBox icon="ph:clock-duotone" />

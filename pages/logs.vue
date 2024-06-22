@@ -1,7 +1,7 @@
 <template>
     <div class="py-4">
         <TgSection title="Logs">
-            <pre class="p-3 max-w-[100vw] h-[90vh] overflow-auto">
+            <pre class="p-3 max-w-[100vw] h-[90vh] overflow-auto font-mono">
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Nunc et vulputate nunc, ut tincidunt nisl. Etiam ullamcorper blandit tellus, sed efficitur li
 bero elementum eu. Praesent efficitur viverra lorem, ac faucibus felis tristique ac. Aenean bibendum, pu
