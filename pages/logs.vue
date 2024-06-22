@@ -1,4 +1,5 @@
 <template>
+    <TgLoader :loaded="loaded" />
     <div class="py-4">
         <TgSection title="Logs">
             <pre class="p-3 max-w-[100vw] h-[90vh] overflow-auto font-mono">
@@ -35,12 +36,18 @@ definePageMeta({
     layout: 'webapp',
 })
 
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
+const loaded = ref(false)
+
 onMounted(() => {
     Telegram.WebApp.BackButton.show();
+
+    setTimeout(() => {
+        loaded.value = true
+    }, 1000)
 
     Telegram.WebApp.onEvent('backButtonClicked', () => {
         router.push('/')

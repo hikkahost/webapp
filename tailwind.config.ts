@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss'
 import colors from 'tailwindcss/colors'
+import animations from '@midudev/tailwind-animations'
 
 export default <Partial<Config>>{
   darkMode: 'class',
@@ -22,4 +23,5 @@ export default <Partial<Config>>{
       },
     },
   },
+  plugins: [animations],
 }

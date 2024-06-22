@@ -1,5 +1,6 @@
 <template>
-  <div class="py-4">
+  <TgLoader :loaded="loaded" />
+  <div>
     <TgSection>
       <TgLine :border="false" class="pt-2">
         <TgIconBox icon="ph:moon-duotone" size="xl" />
@@ -82,13 +83,19 @@ definePageMeta({
   layout: 'webapp',
 })
 
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+
+const loaded = ref(false)
 
 const actionPopup = (action: string) => {
-  Telegram.WebApp.showPopup({
-    title: 'Action',
-    message: `Action ${action} confirmed`,
-  })
+  loaded.value = false
+  setTimeout(() => {
+    loaded.value = true
+    Telegram.WebApp.showPopup({
+      title: 'Action',
+      message: `Action ${action} confirmed`,
+    })
+  }, 1000)
 }
 
 const hikkaOpen = () => {
@@ -96,6 +103,10 @@ const hikkaOpen = () => {
 }
 
 onMounted(() => {
+  setTimeout(() => {
+    loaded.value = true
+  }, 2000)
+
   Telegram.WebApp.BackButton.hide();
 })
 </script>

@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@vueuse/nuxt'],
 
   googleFonts: {

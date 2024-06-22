@@ -31,10 +31,10 @@ const { component, attributes, className } = useTgButton(props)
 
 const buttonClass = computed(() => {
   const sizes = {
-    sm: 'font-sans h-6 px-4 text-sm rounded',
-    md: 'font-sans h-9 px-5 text-sm rounded',
-    lg: 'font-sans h-11 px-5 text-sm rounded',
-    xl: 'font-sans h-13 px-5 rounded-lg',
+    sm: 'active:animate-tilt font-sans h-6 px-4 text-sm rounded',
+    md: 'active:animate-tilt font-sans h-9 px-5 text-sm rounded',
+    lg: 'active:animate-tilt font-sans h-11 px-5 text-sm rounded',
+    xl: 'active:animate-tilt font-sans h-13 px-5 rounded-lg',
   }
 
   const colors = {
