@@ -10,12 +10,12 @@
       <TgLine :border="false">
         <p class="tg-hint leading-none text-xs pb-1">Hosting for Hikka userbot</p>
       </TgLine>
-      <TgLine class="pt-2" :border="false">
-        <TgButton @click="actionPopup" icon="ph:play-duotone">Start</TgButton>
-        <TgButton @click="actionPopup" icon="ph:pause-duotone">Stop</TgButton>
+      <TgLine class="pt-2 max-w-80 m-auto" :border="false">
+        <TgButton @click="actionPopup('start')" icon="ph:play-duotone">Start</TgButton>
+        <TgButton @click="actionPopup('stop')" icon="ph:pause-duotone">Stop</TgButton>
       </TgLine>
-      <TgLine class="pb-2">
-        <TgButton @click="actionPopup" icon="ph:play-pause-duotone">Restart</TgButton>
+      <TgLine class="pb-2 max-w-80 m-auto">
+        <TgButton @click="actionPopup('restart')" icon="ph:play-pause-duotone">Restart</TgButton>
       </TgLine>
     </TgSection>
 
@@ -56,12 +56,21 @@
         </template>
       </TgCell>
 
+      <TgCell title="Hikka" description="Hikka web UI">
+        <template #icon>
+          <TgIconBox icon="ph:app-window-duotone" />
+        </template>
+        <template #right>
+          <TgButton @click="hikkaOpen">Open</TgButton>
+        </template>
+      </TgCell>
+
       <TgCell title="Logs" description="All userbot logs">
         <template #icon>
           <TgIconBox icon="ph:bug-beetle-duotone" />
         </template>
         <template #right>
-          <TgButton to="/logs">Open</TgButton>
+          <TgButton to="/logs">Show</TgButton>
         </template>
       </TgCell>
     </TgSection>
@@ -72,12 +81,21 @@
 definePageMeta({
   layout: 'webapp',
 })
-const logs = 'lorem ipsum\n' * 100;
 
-const actionPopup = () => {
+import { onMounted } from 'vue'
+
+const actionPopup = (action: string) => {
   Telegram.WebApp.showPopup({
     title: 'Action',
-    message: 'Action complete success'
+    message: `Action ${action} confirmed`,
   })
 }
+
+const hikkaOpen = () => {
+  Telegram.WebApp.openLink('http://79.137.207.64:2352')
+}
+
+onMounted(() => {
+  Telegram.WebApp.BackButton.hide();
+})
 </script>
