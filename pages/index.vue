@@ -21,12 +21,12 @@
     </TgSection>
 
     <TgSection>
-      <TgCell title="Subscription time" description="Expires in 27.02.2024">
+      <TgCell title="Subscription time" :description="`Expires at ${expired_date}`">
         <template #icon>
           <TgIconBox icon="ph:clock-duotone" />
         </template>
         <template #right>
-          1w 10d
+          {{ days_left }}
         </template>
       </TgCell>
 
@@ -83,9 +83,27 @@ definePageMeta({
   layout: 'webapp',
 })
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import type { ValidatorAnswer, InfoAnswer } from '../types/answers';
 
 const loaded = ref(false)
+const token = ref('')
+const expired_date = ref('2022-12-31')
+const port = ref(1000)
+
+const days_left = computed(() => {
+  const date = new Date(expired_date.value)
+  const now = new Date()
+  const diff = date.getTime() - now.getTime()
+  let res = {
+    weeks: 0,
+    days: 0,
+  }
+  let days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  res.weeks = Math.floor(days / 7)
+  res.days = days % 7
+  return `${res.weeks}w${res.days}d`
+})
 
 const actionPopup = (action: string) => {
   loaded.value = false
@@ -99,32 +117,39 @@ const actionPopup = (action: string) => {
 }
 
 const hikkaOpen = () => {
-  Telegram.WebApp.openLink('http://79.137.207.64:2352')
+  Telegram.WebApp.openLink('http://79.137.207.64:' + port.value)
 }
 
-onMounted(() => {
-  const { data } = useFetch('/api/validate', {
+onMounted(async () => {
+  const validate = await $fetch('/api/validate', {
+    method: 'POST',
     body: {
       initData: Telegram.WebApp.initData,
-      hash: Telegram.WebApp.hash,
-    },
-  })
+      hash: Telegram.WebApp.initDataUnsafe.hash,
+    }
+  }) as ValidatorAnswer
 
-  if (data.error) {
+  if (!validate.ok) {
     Telegram.WebApp.showPopup({
       title: 'Error',
-      message: data.error,
+      message: validate.error,
     })
   } else {
-    Telegram.WebApp.showPopup({
-      title: 'Nice',
-      message: `Welcome? ${data.ok}`,
-    })
-  }
+    token.value = validate.token
 
-  setTimeout(() => {
+    const info = await $fetch('/api/info', {
+      method: 'POST',
+      body: {
+        token: token.value,
+        userId: Telegram.WebApp.initDataUnsafe.user.id,
+      }
+    }) as InfoAnswer
+
+    port.value = info.answer.host.port
+    expired_date.value = info.answer.host.end_date.split('T')[0]
+
     loaded.value = true
-  }, 2000)
+  }
 
   Telegram.WebApp.BackButton.hide();
 })

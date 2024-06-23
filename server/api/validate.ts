@@ -1,7 +1,15 @@
+/*
+This a hash validation for a Telegram Mini App.
+
+https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+*/
+
 import { webcrypto } from 'crypto';
-//import fetch from 'node-fetch';
+import fetch from 'node-fetch';
 
 const BOT_TOKEN: string | undefined = process.env.BOT_TOKEN;
+const SERVER_TOKEN: string | undefined = process.env.SERVER_TOKEN;
+const SERVER_IP: string | undefined = process.env.SERVER_IP;
 
 type TransformInitData = {
     [k: string]: string;
@@ -51,19 +59,33 @@ async function validate(data: TransformInitData, botToken: string) {
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
 
-    if (!BOT_TOKEN) {
-        return {"error": "Bot token is not set"};
+    if (!BOT_TOKEN || !SERVER_TOKEN || !SERVER_IP) {
+        return {"error": "Server config is not set", "ok": false};
     }
 
-    const { hash, initData } = body;
+    const { initData } = body;
 
-    if (!hash || !initData) {
-        return {"error": "Invalid request"};
+    if (!initData) {
+        return {"error": "Invalid request", "ok": false};
     }
 
     const data = transformInitData(initData);
+    const userId = JSON.parse(data.user).id;
 
     const isValid = await validate(data, BOT_TOKEN);
 
-    return { "ok": isValid };
+    if (isValid) {
+        const response = await (await fetch(
+            `${SERVER_IP}/api/user/${userId}/token`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "token": process.env.SERVER_TOKEN || "",
+                },
+            }
+        )).json() as { token: string };
+        return { "ok": true, "token": response.token, "error": undefined };
+    } else {
+        return { "ok": false, "error": "Invalid hash" };
+    }
 });
