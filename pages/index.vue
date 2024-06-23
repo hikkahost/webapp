@@ -118,7 +118,7 @@ onMounted(() => {
   } else {
     Telegram.WebApp.showPopup({
       title: 'Nice',
-      message: data.ok,
+      message: `Welcome? ${data.ok}`,
     })
   }
 
