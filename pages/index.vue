@@ -110,10 +110,17 @@ onMounted(() => {
     },
   })
 
-  Telegram.WebApp.showPopup({
-    title: 'Validator',
-    message: data.toString(),
-  })
+  if (data.error) {
+    Telegram.WebApp.showPopup({
+      title: 'Error',
+      message: data.error,
+    })
+  } else {
+    Telegram.WebApp.showPopup({
+      title: 'Nice',
+      message: data.ok,
+    })
+  }
 
   setTimeout(() => {
     loaded.value = true
