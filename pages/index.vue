@@ -88,7 +88,7 @@ import type { ValidatorAnswer, InfoAnswer } from '../types/answers';
 
 const loaded = ref(false)
 const token = ref('')
-const expired_date = ref('2022-12-31')
+const expired_date = ref('2006-03-28')
 const port = ref(1000)
 
 const days_left = computed(() => {
