@@ -95,14 +95,8 @@ const days_left = computed(() => {
   const date = new Date(expired_date.value)
   const now = new Date()
   const diff = date.getTime() - now.getTime()
-  let res = {
-    weeks: 0,
-    days: 0,
-  }
-  let days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  res.weeks = Math.floor(days / 7)
-  res.days = days % 7
-  return `${res.weeks}w${res.days}d`
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  return `${days} days`
 })
 
 const actionPopup = (action: string) => {
@@ -117,7 +111,7 @@ const actionPopup = (action: string) => {
 }
 
 const hikkaOpen = () => {
-  Telegram.WebApp.openLink('http://79.137.207.64:' + port.value)
+  Telegram.WebApp.openLink(`http://79.137.207.64:${port.value}`)
 }
 
 onMounted(async () => {
