@@ -103,6 +103,18 @@ const hikkaOpen = () => {
 }
 
 onMounted(() => {
+  const { data } = useFetch('/api/validate', {
+    body: {
+      initData: Telegram.WebApp.initData,
+      hash: Telegram.WebApp.hash,
+    },
+  })
+
+  Telegram.WebApp.showPopup({
+    title: 'Validator',
+    message: data.toString(),
+  })
+
   setTimeout(() => {
     loaded.value = true
   }, 2000)
