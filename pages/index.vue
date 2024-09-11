@@ -110,7 +110,7 @@ const actionPopup = (action: string) => {
     method: 'POST',
     body: {
       action: action,
-      token: token,
+      token: token.value,
       userId: token.value.split(':')[0]
     }
   }).then(() => {

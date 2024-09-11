@@ -2,9 +2,7 @@
     <TgLoader :loaded="loaded" />
     <div class="py-4">
         <TgSection title="Logs">
-            <pre class="p-3 max-w-[100vw] h-[90vh] overflow-auto font-mono">
-                {{ logs }}
-            </pre>
+            <pre class="p-3 max-w-[100vw] h-[90vh] overflow-auto font-mono">{{ logs }}</pre>
         </TgSection>
     </div>
 </template>
@@ -42,7 +40,7 @@ onMounted(async () => {
         const req = await $fetch('/api/logs', {
             method: 'POST',
             body: {
-                token: token,
+                token: token.value,
                 userId: token.value.split(':')[0]
             }
         }) as LogsAnswer;
