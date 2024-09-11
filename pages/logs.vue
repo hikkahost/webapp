@@ -16,7 +16,7 @@ definePageMeta({
 
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import type { LogsAnswer } from '../types/answers';
+import type { LogsAnswer, ValidatorAnswer } from '../types/answers';
 const router = useRouter()
 
 const loaded = ref(false)

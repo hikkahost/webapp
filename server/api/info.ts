@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) => {
     );
 
     const data = await response.json();
+    console.log(data);
 
     return { "answer": data, "error": undefined };
 });
