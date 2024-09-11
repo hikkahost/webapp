@@ -126,6 +126,20 @@ const hikkaOpen = () => {
   Telegram.WebApp.openLink(`http://79.137.207.64:${port.value}`)
 }
 
+const parseStats = (async() => {
+    const stats = await $fetch('/api/stats', {
+      method: 'POST',
+      body: {
+        token: token.value,
+        userId: Telegram.WebApp.initDataUnsafe.user.id,
+      }
+    }) as StatsAnswer
+
+    usage.cpu = stats.answer.stats.cpu_stats.cpu_usage.total_usage / stats.answer.stats.cpu_stats.system_cpu_usage * 100
+    usage.ram = stats.answer.stats.memory_stats.usage / 1024 / 1024 / 1024 * 100
+    usage.ping = stats.ping / 100
+})
+
 onMounted(async () => {
   Telegram.WebApp.BackButton.hide();
   const validate = await $fetch('/api/validate', {
@@ -157,18 +171,10 @@ onMounted(async () => {
 
     loaded.value = true
 
-    setInterval(async () => {
-      const stats = await $fetch('/api/stats', {
-        method: 'POST',
-        body: {
-          token: token.value,
-          userId: Telegram.WebApp.initDataUnsafe.user.id,
-        }
-      }) as StatsAnswer
+    await parseStats();
 
-      usage.cpu = stats.answer.stats.cpu_stats.cpu_usage.total_usage / stats.answer.stats.cpu_stats.system_cpu_usage * 100
-      usage.ram = stats.answer.stats.memory_stats.usage / 1024 / 1024 / 1024 * 100
-      usage.ping = stats.ping / 100
+    setInterval(async () => {
+      await parseStats();
     }, 5000);
   }
 })

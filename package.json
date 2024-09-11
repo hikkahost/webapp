@@ -1,6 +1,6 @@
 {
   "name": "hh-webapp",
-  "version": "0.0.3-test",
+  "version": "0.0.4",
   "main": "./nuxt.config.ts",
   "scripts": {
     "build": "nuxt build",

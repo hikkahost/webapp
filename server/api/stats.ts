@@ -29,7 +29,6 @@ export default defineEventHandler(async (event) => {
     let ping = new Date().getTime() - start_time.getTime();
 
     const data = await response.json();
-    console.log(data);
 
     return { "answer": data, "error": undefined, "ping": ping  };
 });

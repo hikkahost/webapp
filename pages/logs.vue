@@ -1,8 +1,8 @@
 <template>
     <TgLoader :loaded="loaded" />
     <div class="py-4">
-        <TgSection title="Logs">
-            <pre class="p-3 max-w-[100vw] h-[90vh] overflow-auto font-mono" id="logsArea">{{ logs }}</pre>
+        <TgSection title="Logs (reversed lines)">
+            <pre class="p-3 max-w-[100vw] h-[90vh] overflow-auto font-mono" id="logsArea">{{ logs.split('\n').reverse().join('\n') }}</pre>
         </TgSection>
     </div>
 </template>
@@ -53,9 +53,6 @@ onMounted(async () => {
 
         logs.value = req.answer.logs;
         loaded.value = true
-        window.scrollTo(0, document.body.scrollHeight);
-        const area = document.querySelector('#logsArea');
-        area?.scrollTo(0, area.scrollHeight);
     }
 })
 </script>
