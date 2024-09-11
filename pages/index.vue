@@ -34,7 +34,7 @@
           <TgIconBox icon="ph:cpu-duotone" />
         </template>
         <template #right>
-          {{ usage.cpu }}%
+          {{ Math.round(usage.cpu * 100) / 100 }}%
         </template>
       </TgCell>
 
@@ -43,7 +43,7 @@
           <TgIconBox icon="ph:memory-duotone" />
         </template>
         <template #right>
-          {{ usage.ram }}%
+          {{ Math.round(usage.ram * 100) / 100 }}%
         </template>
       </TgCell>
 
