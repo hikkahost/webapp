@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
         return {"error": "Invalid request", "answer": {}};
     }
 
+    let start_time = new Date();
     const response = await fetch(
         `${SERVER_IP}/api/host/${userId}/logs/all`,
         {
@@ -25,8 +26,9 @@ export default defineEventHandler(async (event) => {
             },
         }
     );
+    let ping = new Date().getTime() - start_time.getTime();
 
     const data = await response.json();
 
-    return { "answer": data, "error": undefined };
+    return { "answer": data, "error": undefined, "ping": ping };
 });

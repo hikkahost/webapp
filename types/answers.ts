@@ -20,5 +20,25 @@ type InfoAnswer = {
     }
 };
 
+type LogsAnswer = {
+    answer: {
+        logs: string
+    }
+}
 
-export type { ValidatorAnswer, InfoAnswer };
+type StatsAnswer = {
+    answer: {
+        stats: {
+            cpu_stats: {
+                total_usage: number
+                system_cpu_usage: number
+            }
+            memory_stats: {
+                usage: number
+            }
+        }
+    },
+    ping: number
+}
+
+export type { ValidatorAnswer, InfoAnswer, LogsAnswer, StatsAnswer };

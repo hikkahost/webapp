@@ -1,5 +1,4 @@
 <template>
-  <TgLoader :loaded="loaded" />
   <div>
     <TgSection>
       <TgLine :border="false" class="pt-2">
@@ -35,7 +34,7 @@
           <TgIconBox icon="ph:cpu-duotone" />
         </template>
         <template #right>
-          5.45%
+          {{ usage.cpu }}%
         </template>
       </TgCell>
 
@@ -44,7 +43,7 @@
           <TgIconBox icon="ph:memory-duotone" />
         </template>
         <template #right>
-          78.4%
+          {{ usage.ram }}%
         </template>
       </TgCell>
 
@@ -53,7 +52,7 @@
           <TgIconBox icon="ph:ping-pong-duotone" />
         </template>
         <template #right>
-          20.13ms
+          {{ usage.ping }}ms
         </template>
       </TgCell>
 
@@ -84,12 +83,18 @@ definePageMeta({
 })
 
 import { ref, onMounted, computed } from 'vue'
-import type { ValidatorAnswer, InfoAnswer } from '../types/answers';
+import type { ValidatorAnswer, InfoAnswer, StatsAnswer } from '../types/answers';
 
 const loaded = ref(false)
 const token = ref('')
 const expired_date = ref('2006-03-28')
 const port = ref(1000)
+
+const usage = reactive({
+  cpu: 5.45,
+  ram: 78.4,
+  ping: 20.13
+})
 
 const days_left = computed(() => {
   const date = new Date(expired_date.value)
@@ -101,13 +106,20 @@ const days_left = computed(() => {
 
 const actionPopup = (action: string) => {
   loaded.value = false
-  setTimeout(() => {
+  $fetch('/api/action', {
+    method: 'POST',
+    body: {
+      action: action,
+      token: token,
+      userId: token.value.split(':')[0]
+    }
+  }).then(() => {
     loaded.value = true
     Telegram.WebApp.showPopup({
       title: 'Action',
       message: `Action ${action} confirmed`,
     })
-  }, 1000)
+  })
 }
 
 const hikkaOpen = () => {
