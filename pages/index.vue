@@ -87,24 +87,21 @@ import type { ValidatorAnswer, InfoAnswer, StatsAnswer } from '../types/answers'
 
 const loaded = ref(false)
 const token = ref('')
-const expired_date = ref('')
+const expired_date = ref('2006-03-28')
 const port = ref(1000)
 
 const usage = reactive({
-  cpu: 5.45,
-  ram: 78.4,
-  ping: 20.13
+  cpu: 0,
+  ram: 0,
+  ping: 0
 })
 
 const days_left = computed(() => {
-  if (!expired_date.value) {
-    return `...`
-  }
   const date = new Date(expired_date.value)
   const now = new Date()
   const diff = date.getTime() - now.getTime()
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  return `${days} days`
+  return days > -1 ? `${days} days` : '...'
 })
 
 const actionPopup = (action: string) => {
@@ -160,13 +157,19 @@ onMounted(async () => {
 
     loaded.value = true
 
-    await $fetch('/api/stats', {
-      method: 'POST',
-      body: {
-        token: token.value,
-        userId: Telegram.WebApp.initDataUnsafe.user.id,
-      }
-    })
+    setInterval(async () => {
+      const stats = await $fetch('/api/stats', {
+        method: 'POST',
+        body: {
+          token: token.value,
+          userId: Telegram.WebApp.initDataUnsafe.user.id,
+        }
+      }) as StatsAnswer
+
+      usage.cpu = stats.answer.stats.cpu_stats.cpu_usage.total_usage / stats.answer.stats.cpu_stats.system_cpu_usage * 100
+      usage.ram = stats.answer.stats.memory_stats.usage / 1024 / 1024 / 1024 * 100
+      usage.ping = stats.ping / 100
+    }, 5000);
   }
 })
 </script>

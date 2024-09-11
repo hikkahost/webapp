@@ -30,7 +30,9 @@ type StatsAnswer = {
     answer: {
         stats: {
             cpu_stats: {
-                total_usage: number
+                cpu_usage: {
+                    total_usage: number
+                }
                 system_cpu_usage: number
             }
             memory_stats: {
