@@ -87,7 +87,7 @@ import type { ValidatorAnswer, InfoAnswer, StatsAnswer } from '../types/answers'
 
 const loaded = ref(false)
 const token = ref('')
-const expired_date = ref('2006-03-28')
+const expired_date = ref('')
 const port = ref(1000)
 
 const usage = reactive({
@@ -97,6 +97,9 @@ const usage = reactive({
 })
 
 const days_left = computed(() => {
+  if (!expired_date.value) {
+    return `...`
+  }
   const date = new Date(expired_date.value)
   const now = new Date()
   const diff = date.getTime() - now.getTime()
@@ -127,6 +130,7 @@ const hikkaOpen = () => {
 }
 
 onMounted(async () => {
+  Telegram.WebApp.BackButton.hide();
   const validate = await $fetch('/api/validate', {
     method: 'POST',
     body: {
@@ -155,8 +159,14 @@ onMounted(async () => {
     expired_date.value = info.answer.host.end_date.split('T')[0]
 
     loaded.value = true
-  }
 
-  Telegram.WebApp.BackButton.hide();
+    await $fetch('/api/stats', {
+      method: 'POST',
+      body: {
+        token: token.value,
+        userId: Telegram.WebApp.initDataUnsafe.user.id,
+      }
+    })
+  }
 })
 </script>

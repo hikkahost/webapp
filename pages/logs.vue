@@ -22,6 +22,12 @@ const logs = ref('')
 const token = ref('')
 
 onMounted(async () => {
+    Telegram.WebApp.BackButton.show();
+
+    Telegram.WebApp.onEvent('backButtonClicked', () => {
+        router.push('/')
+    })
+
     const validate = await $fetch('/api/validate', {
         method: 'POST',
         body: {
@@ -41,17 +47,12 @@ onMounted(async () => {
             method: 'POST',
             body: {
                 token: token.value,
-                userId: token.value.split(':')[0]
+                userId: Telegram.WebApp.initDataUnsafe.user.id
             }
         }) as LogsAnswer;
 
         logs.value = req.answer.logs;
         loaded.value = true
     }
-    Telegram.WebApp.BackButton.show();
-
-    Telegram.WebApp.onEvent('backButtonClicked', () => {
-        router.push('/')
-    })
 })
 </script>
