@@ -16,7 +16,20 @@ type InfoAnswer = {
             rate: number,
             name: string,
             start_date: string
+        },
+        server: {
+            id: number,
+            max_users: number,
+            users: number,
+            name: string,
+            city: string,
+            country_code: string,
+            ip: string,
+            banner: string,
         }
+    } | {
+        status_code: number,
+        detail: string,
     }
 };
 

@@ -88,7 +88,7 @@ import type { ValidatorAnswer, InfoAnswer, StatsAnswer } from '../types/answers'
 const loaded = ref(false)
 const token = ref('')
 const expired_date = ref('2006-03-28')
-const port = ref(1000)
+const ip = ref('');
 
 const usage = reactive({
   cpu: 0,
@@ -123,7 +123,7 @@ const actionPopup = (action: string) => {
 }
 
 const hikkaOpen = () => {
-  Telegram.WebApp.openLink(`http://79.137.207.64:${port.value}`)
+  Telegram.WebApp.openLink(`http://${ip.value}`)
 }
 
 const parseStats = (async() => {
@@ -166,7 +166,14 @@ onMounted(async () => {
       }
     }) as InfoAnswer
 
-    port.value = info.answer.host.port
+    if (info.status_code === 404) {
+      return Telegram.WebApp.showPopup({
+        title: 'Error',
+        message: 'You don\'t have any active subscription',
+      })
+    }
+
+    ip.value = info.answer.server.ip + ':' + info.answer.host.port.toString()
     expired_date.value = info.answer.host.end_date.split('T')[0]
 
     loaded.value = true
