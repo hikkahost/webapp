@@ -16,6 +16,7 @@
       </TgLine>
       <TgLine class="pb-2 max-w-80 m-auto">
         <TgButton @click="actionPopup('restart')" icon="ph:play-pause-duotone">Restart</TgButton>
+        <TgButton @click="recreatePopup()" icon="ph:arrow-counter-clockwise-duotone">Recreate</TgButton>
       </TgLine>
     </TgSection>
 
@@ -89,6 +90,7 @@ const loaded = ref(false)
 const token = ref('')
 const expired_date = ref('2006-03-28')
 const ip = ref('');
+const host_id = ref(0)
 
 const usage = reactive({
   cpu: 0,
@@ -118,6 +120,27 @@ const actionPopup = (action: string) => {
     Telegram.WebApp.showPopup({
       title: 'Action',
       message: `Action ${action} confirmed`,
+    })
+  })
+}
+
+const recreatePopup = () => {
+  Telegram.WebApp.showConfirm('Are you sure? You will lose all data!', recreate)
+}
+
+const recreate = () => {
+  loaded.value = false
+  $fetch('/api/recreate', {
+    method: 'POST',
+    body: {
+      token: token.value,
+      hostId: host_id.value
+    }
+  }).then(() => {
+    loaded.value = true
+    Telegram.WebApp.showPopup({
+      title: 'Recreate',
+      message: 'Recreate confirmed',
     })
   })
 }
@@ -175,6 +198,7 @@ onMounted(async () => {
 
     ip.value = info.answer.server.ip + ':' + info.answer.host.port.toString()
     expired_date.value = info.answer.host.end_date.split('T')[0]
+    host_id.value = info.answer.host.id
 
     loaded.value = true
 

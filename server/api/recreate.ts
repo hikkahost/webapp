@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 
 const SERVER_IP: string | undefined = process.env.SERVER_IP;
-const SERVER_TOKEN: string | undefined = process.env.SERVER_TOKEN;
 
 
 export default defineEventHandler(async (event) => {
@@ -11,25 +10,23 @@ export default defineEventHandler(async (event) => {
         return {"error": "Server config is not set", "answer": {}};
     }
 
-    const { token, userId } = body;
+    const { token, hostId } = body;
 
-    if (!token || !userId) {
+    if (!token || !hostId) {
         return {"error": "Invalid request", "answer": {}};
     }
 
-    let start_time = new Date();
     const response = await fetch(
-        `${SERVER_IP}/api/host/${userId}/stats`,
+        `${SERVER_IP}/api/host/${hostId}/recreate`,
         {
             headers: {
                 "Content-Type": "application/json",
-                "token": SERVER_TOKEN ? SERVER_TOKEN.toString() : token.toString(),
+                "token": token.toString()
             },
         }
     );
-    let ping = new Date().getTime() - start_time.getTime();
 
     const data = await response.json();
 
-    return { "answer": data, "error": undefined, "ping": ping  };
+    return { "answer": data, "error": undefined };
 });
