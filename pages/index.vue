@@ -1,4 +1,5 @@
 <template>
+  <TgLoader :loaded="loaded" />
   <div>
     <TgSection>
       <TgLine :border="false" class="pt-2">
