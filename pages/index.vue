@@ -128,7 +128,9 @@ const recreatePopup = () => {
   Telegram.WebApp.showConfirm('Are you sure? You will lose all data!', recreate)
 }
 
-const recreate = () => {
+const recreate = (callback: boolean) => {
+  if (!callback) return
+
   loaded.value = false
   $fetch('/api/recreate', {
     method: 'POST',
@@ -146,7 +148,7 @@ const recreate = () => {
 }
 
 const hikkaOpen = () => {
-  Telegram.WebApp.openLink(`http://${ip.value}`)
+  Telegram.WebApp.openLink(`${ip.value}`)
 }
 
 const parseStats = (async() => {
@@ -196,7 +198,7 @@ onMounted(async () => {
       })
     }
 
-    ip.value = info.answer.server.ip + ':' + info.answer.host.port.toString()
+    ip.value = info.answer.server.ip.split(':')[0] + ':' + info.answer.host.port.toString()
     expired_date.value = info.answer.host.end_date.split('T')[0]
     host_id.value = info.answer.host.id
 

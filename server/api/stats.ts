@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 
 const SERVER_IP: string | undefined = process.env.SERVER_IP;
-const SERVER_TOKEN: string | undefined = process.env.SERVER_TOKEN;
 
 
 export default defineEventHandler(async (event) => {
@@ -23,7 +22,7 @@ export default defineEventHandler(async (event) => {
         {
             headers: {
                 "Content-Type": "application/json",
-                "token": SERVER_TOKEN ? SERVER_TOKEN.toString() : token.toString(),
+                "token": token.toString()
             },
         }
     );
