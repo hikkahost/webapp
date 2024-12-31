@@ -166,6 +166,7 @@ const parseStats = (async() => {
 })
 
 onMounted(async () => {
+  loaded.value = false
   Telegram.WebApp.BackButton.hide();
   const validate = await $fetch('/api/validate', {
     method: 'POST',
