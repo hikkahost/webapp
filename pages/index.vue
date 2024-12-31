@@ -148,7 +148,7 @@ const recreate = (callback: boolean) => {
 }
 
 const hikkaOpen = () => {
-  Telegram.WebApp.openLink(`${ip.value}`)
+  Telegram.WebApp.openLink(`http://${ip.value}`)
 }
 
 const parseStats = (async() => {
