@@ -191,7 +191,7 @@ onMounted(async () => {
       }
     }) as InfoAnswer
 
-    if (info.status_code === 404) {
+    if (info.answer.status_code === 404) {
       return Telegram.WebApp.showPopup({
         title: 'Error',
         message: 'You don\'t have any active subscription',
